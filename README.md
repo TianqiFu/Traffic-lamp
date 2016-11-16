@@ -4,3 +4,5 @@
 本次设计基于TI公司的**MPS430-G2553**
 
 编译软件为ARI
+串行数码管显示电路（一位）
+[img](C:\Users\Administrator\Desktop)
