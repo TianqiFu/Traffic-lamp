@@ -1,9 +1,25 @@
 #include<MSP430.h>
+/*P1.6为东西方向时钟
+P1.7为东西方向信号
+P1.0为红灯
+P1.1为黄灯
+P1.2为绿灯
+
+P2.3为南北方向时钟
+P2.4为南北方向信号
+P2.0为红灯
+P2.1为黄灯
+P2.2为绿灯
+
+串行方式输入
+*/
+/*显示数字数组*/
 const unsigned char display_table[18]={
      0xee,0x82,0xdc,0xd6,
      0xb2,0x76,0x7e,0xc2,
      0xfe,0xf6}; 
 unsigned char i; 
+/*东西方向一位显示函数*/
 void displayEW(unsigned char data)
 {
      unsigned char serial_shift;
@@ -29,6 +45,7 @@ void displayEW(unsigned char data)
           serial_shift=serial_shift >> 1;
      }
 }
+/*南北方向一位显示函数*/
 void displaySN(unsigned char data)
 {
      unsigned char serial_shift;
@@ -53,6 +70,7 @@ void displaySN(unsigned char data)
           serial_shift=serial_shift >> 1;
      }
 }
+/*东西方向两位显示函数*/
 void displayEW2(unsigned char seg7_data_2)
 {
   unsigned char t;
@@ -63,6 +81,7 @@ void displayEW2(unsigned char seg7_data_2)
   displayEW(seg7_0);
   displayEW(seg7_1);
  }
+ /*南北方向两位显示函数*/
 void displaySN2(unsigned char seg7_data_2)
 {
   unsigned char t;
@@ -73,6 +92,7 @@ void displaySN2(unsigned char seg7_data_2)
   displaySN(seg7_0);
   displaySN(seg7_1);
 }
+/*一秒延时函数*/
 void delay(void)
 {
      unsigned long delay_num;
