@@ -7,4 +7,4 @@
 
 串行数码管显示电路（一位）
 
-！[img](C:\Users\Administrator\Desktop\图片1.png)
+！[img](file:///C:\Users\Administrator\Desktop\图片1.png)
