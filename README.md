@@ -6,5 +6,4 @@
 编译软件为ARI
 
 串行数码管显示电路（一位）
-
-！[img](file:///C:\Users\Administrator\Desktop\图片1.png)
+(github上传出了问题)
