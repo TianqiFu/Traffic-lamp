@@ -1,0 +1,134 @@
+#include<MSP430.h>
+const unsigned char display_table[18]={
+     0xee,0x82,0xdc,0xd6,
+     0xb2,0x76,0x7e,0xc2,
+     0xfe,0xf6}; 
+unsigned char i; 
+void displayEW(unsigned char data)
+{
+     unsigned char serial_shift;
+     unsigned char serial_num;
+     unsigned char serial_data;
+     serial_data=display_table[data];
+     
+     P1OUT &= ~BIT7;
+     P1OUT &= ~BIT6;
+     serial_shift=0x80;
+     for(serial_num=0;serial_num<8;serial_num++)
+     {
+          if(serial_data&serial_shift)
+          {
+               P1OUT |= BIT7;
+          }
+          else
+          {
+               P1OUT &= ~BIT7;
+          }
+          P1OUT |= BIT6;
+          P1OUT &= ~BIT6;
+          serial_shift=serial_shift >> 1;
+     }
+}
+void displaySN(unsigned char data)
+{
+     unsigned char serial_shift;
+     unsigned char serial_num;
+     unsigned char serial_data;
+     serial_data=display_table[data];
+     serial_shift=0x80;
+     P2OUT &= ~BIT4;
+     P2OUT &= ~BIT3;
+     for(serial_num=0;serial_num<8;serial_num++)
+     {
+          if(serial_data&serial_shift)
+          {
+               P2OUT |= BIT4;
+          }
+          else
+          {
+               P2OUT &= ~BIT4;
+          }
+          P2OUT |= BIT3;
+          P2OUT &= ~BIT3;
+          serial_shift=serial_shift >> 1;
+     }
+}
+void displayEW2(unsigned char seg7_data_2)
+{
+  unsigned char t;
+  t=seg7_data_2;
+  unsigned char seg7_1,seg7_0;
+  seg7_1=t/10;
+  seg7_0=t%10;
+  displayEW(seg7_0);
+  displayEW(seg7_1);
+ }
+void displaySN2(unsigned char seg7_data_2)
+{
+  unsigned char t;
+  t=seg7_data_2;
+  unsigned char seg7_1,seg7_0;
+  seg7_1=t/10;
+  seg7_0=t%10;
+  displaySN(seg7_0);
+  displaySN(seg7_1);
+}
+void delay(void)
+{
+     unsigned long delay_num;
+     for(delay_num=0;delay_num<126654;delay_num++);
+}
+void main()
+{
+     WDTCTL=WDTHOLD+WDTPW;
+     P1SEL = 0x00;
+     P1SEL2 = 0x00;
+     P1DIR = 0Xff;
+     
+     P2SEL = 0x00;
+     P2SEL2 = 0x00;
+     P2DIR = 0Xff;
+     
+     while(1)
+     {
+        /*东西红灯亮，南北绿灯亮*/
+       P1OUT=0x01;
+       P2OUT=0x04;
+       for(i=7;i>0;i--)
+       {
+	  displayEW2(i+2);
+          displaySN2(i);
+          delay();
+       }
+       /*东西红灯亮，南北黄灯亮*/
+       P1OUT=0x01;
+       P2OUT=0x02;
+       for(i=2;i>0;i--)
+       {
+          displayEW2(i);
+          displaySN2(i);
+          delay();
+       }
+       
+       /*东西绿灯亮，南北红灯亮*/
+       P1OUT=0x04;
+       P2OUT=0x01;
+       for(i=7;i>0;i--)
+       {
+          displayEW2(i);
+          displaySN2(i+2);
+          delay();
+       }
+       
+       /*东西黄灯亮，南北红灯亮*/
+       P1OUT=0x02;
+       P2OUT=0x01;
+       for(i=2;i>0;i--)
+       {
+          displayEW2(i);
+          displaySN2(i);
+          delay();
+       }
+       
+     }
+}
