@@ -6,4 +6,6 @@
 编译软件为ARI
 
 串行数码管显示电路（一位）
+采用共阴极数码管
+
 ![circuit](https://github.com/TianqiFu/Traffic-signal/blob/master/layout.png)
